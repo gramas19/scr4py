@@ -20,7 +20,7 @@ This example shows how the script could be used
 
 ## Getting API endpoints from a website
 
-`python scr4py.py -u [https://example.com]`
+`python scr4py.py -u https://example.com`
 
 This will scrape the website example.com for .php, .asp, jsp and .js files to find endpoints.
 
