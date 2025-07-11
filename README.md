@@ -40,20 +40,17 @@ usage: scr4py.py [-h] [-u URL] [-v VERBOSE] [-o OUTPUT_FILE] [-of OUTPUT_FORMAT]
 A tool for finding endpoints and filenames
 
 options:
--h, --help show this help message and exit
--u, --url URL The URL to scan
--v, --verbose VERBOSE
-Enable detailed output
--o, --output-file OUTPUT_FILE
-Write result to a file
--of, --output-format OUTPUT_FORMAT
-output format: text, json, html
--A, -all A Scan everything
---rate RATE Set rate limit
--H, --header HEADER Set request headers
---random-user-agent RANDOM_USER_AGENT
-Randomize the user-agent each request
---ignore IGNORE Disable SSL verification
+    -h, --help show this help message and exit
+    -u, --url                   URL The URL to scan
+    -v, --verbose               Enable detailed output
+    -o, --output-file           Write result to a file
+    -of, --output-format        OUTPUT_FORMAT
+                                output format: text, json, html
+    -A, -all                    Scan everything
+    --rate                      RATE Set rate limit
+    -H, --header                Set request headers
+    --random-user-agent         Randomize the user-agent each request
+    --ignore                    Disable SSL verification
 ```
 
 # When to use this script?
