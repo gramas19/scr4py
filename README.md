@@ -56,3 +56,7 @@ options:
 # When to use this script?
 
 This script is perfect for gathering endpoints from different websites when you want to build your own lists of endpoints and files/directories to use when doing bug bounty hunting
+
+# Note
+
+This script is still in beta and will be updated
