@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 from colorama import Fore
 from ErrorHandler import ErrorHandler
+from UserAgentHandler import UserAgentHandler
 import requests, urllib3
 import re
 import time
@@ -14,6 +15,9 @@ class EndpointFinder:
     found_endpoints = set()
 
     err_handler = ErrorHandler()
+    user_headers = {
+        "User-Agent" : UserAgentHandler.get_default()
+    }
 
     # Initialize every url with https://
     def __init__(self, url, file_handler, verify=True):
@@ -34,7 +38,7 @@ class EndpointFinder:
         print(js_url)
 
         try:
-            response = requests.get(js_url, verify=self.verify)
+            response = requests.get(js_url, verify=self.verify, header=self.user_headers)
             js_text = response.text
             self._find_endpoints(js_text, js_url)
         except Exception:
@@ -106,7 +110,7 @@ class EndpointFinder:
             print(url)
         #time.sleep(1)
         try:
-            response = requests.get(url, verify=self.verify)
+            response = requests.get(url, verify=self.verify, headers=self.user_headers)
             html = response.text
             soup = BeautifulSoup(html, "html.parser")
 
