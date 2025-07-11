@@ -6,13 +6,13 @@ Scr4py is a python reconaissance tool that identifies endpoints and generates wo
 
 to download the script:
 
-> git clone https://github.com/gramas19/scr4py.git
+`git clone https://github.com/gramas19/scr4py.git`
 
 Install required packages by running the script
 
 _or_
 
-by running > pip install requirements.txt
+by running `pip install requirements.txt`
 
 # Example usage
 
@@ -20,11 +20,11 @@ This example shows how the script could be used
 
 ## Getting API endpoints from a website
 
-> python scr4py.py -u https://example.com
+`python scr4py.py -u [https://example.com]`
 
 This will scrape the website example.com for .php, .asp, jsp and .js files to find endpoints.
 
-If any endpoints are found, they will be stored in a file called <sub>api-endpoints.txt</sub>
+If any endpoints are found, they will be stored in a file called _api-endpoints.txt_
 
 ## Save output of words/links
 
