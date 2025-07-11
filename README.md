@@ -34,7 +34,7 @@ This option has not been implemented yet
 
 In order to run scr4py a URL needs to be defined as in the example above. The most basic use case for this script is to fetch endpoints from different websites.
 
-`
+```
 usage: scr4py.py [-h] [-u URL] [-v VERBOSE] [-o OUTPUT_FILE] [-of OUTPUT_FORMAT] [-A A] [--rate RATE] [-H HEADER] [--random-user-agent RANDOM_USER_AGENT] [--ignore IGNORE]
 
 A tool for finding endpoints and filenames
@@ -54,7 +54,7 @@ output format: text, json, html
 --random-user-agent RANDOM_USER_AGENT
 Randomize the user-agent each request
 --ignore IGNORE Disable SSL verification
-`
+```
 
 # When to use this script?
 
