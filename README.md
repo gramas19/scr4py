@@ -10,7 +10,7 @@ to download the script:
 
 Install required packages by running the script
 
-\*\*or
+_or_
 
 by running > pip install requirements.txt
 
