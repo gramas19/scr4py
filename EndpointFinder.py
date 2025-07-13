@@ -3,6 +3,8 @@ from urllib.parse import urljoin, urlparse
 from colorama import Fore
 from ErrorHandler import ErrorHandler
 from UserAgentHandler import UserAgentHandler
+from FileHandler import FileHandler
+from CLIArguments import CLIArguments
 import requests, urllib3
 import re
 import time
@@ -13,6 +15,7 @@ class EndpointFinder:
     links_to_visit = set()
     visisted_links = set()
     found_endpoints = set()
+    found_words = set()
 
     err_handler = ErrorHandler()
     user_headers = {
@@ -20,9 +23,10 @@ class EndpointFinder:
     }
 
     # Initialize every url with https://
-    def __init__(self, url, file_handler, verify=True):
+    def __init__(self, url, file_handler: FileHandler, cli: CLIArguments, verify=True):
         self.base_url = url if url.startswith("http") else "https://" + url
         self.file_handler = file_handler
+        self.cli = cli
         self.verify = verify
         self.warning_count = 0
         self.url_error_count = 0 # URL connection tries
@@ -38,7 +42,11 @@ class EndpointFinder:
         print(js_url)
 
         try:
-            response = requests.get(js_url, verify=self.verify, header=self.user_headers)
+            if self.cli.args.rua:
+                self.user_headers = {
+                    "User-Agent" : UserAgentHandler.get_random_user_agent()
+                }
+            response = requests.get(js_url, verify=self.verify, headers=self.user_headers)
             js_text = response.text
             self._find_endpoints(js_text, js_url)
         except Exception:
@@ -55,10 +63,22 @@ class EndpointFinder:
                 # Skip short endpoint names in case of garbage
                 if len(clean_endpoint) > 2:
                     self.found_endpoints.add(clean_endpoint)
+                    self._extract_words_from_endpoint(clean_endpoint)
 
-    def _extract_words_from_endpoint(self, endpoint):
-        # TODO: Extract words from endpoint where endpoint does not contain the word api
-        pass
+    def _extract_words_from_endpoint(self, endpoints):
+        for endpoint in endpoints:
+            words = endpoint.split("/")
+            for word in words:
+                if not word:
+                    continue
+                if word.isdigit():
+                    continue
+
+                if len(word) < 2:
+                    continue
+
+                self.found_words.add(word)
+
 
     def _check_for_garbage(self, link):
         # Look for garbage urls in site. Extend list to skip more
@@ -74,6 +94,7 @@ class EndpointFinder:
                 endpoint = path.split("/")[-1].replace(extension, "")
                 if endpoint and endpoint not in self.found_endpoints:
                     self.found_endpoints.add(endpoint)
+                    self._extract_words_from_endpoint(endpoint)
                 self._extract_links(full_url)
 
     # Try to handle error and retry connection on misspelled URLs
@@ -110,6 +131,10 @@ class EndpointFinder:
             print(url)
         #time.sleep(1)
         try:
+            if self.cli.args.rua:
+                self.user_headers = {
+                    "User-Agent" : UserAgentHandler.get_random_user_agent()
+                }
             response = requests.get(url, verify=self.verify, headers=self.user_headers)
             html = response.text
             soup = BeautifulSoup(html, "html.parser")
@@ -179,6 +204,8 @@ class EndpointFinder:
 
         print("Found endpoints:", self.found_endpoints)
         self._extract_words_from_endpoint(self.found_endpoints)
+        print("Words found: ", self.found_words)
+        self.file_handler.save(self.found_words)
         self.file_handler.save_api_endpoints(self.found_endpoints)
 
 
