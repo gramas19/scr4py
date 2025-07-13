@@ -31,10 +31,9 @@ def install_from_requirements(requirements_file="requirements.txt"):
 if __name__ == "__main__":
 
     install_from_requirements()
-    # TODO: Add argument handling for different purposes
     cli = CLIArguments()
     
-    file_handler = FileHandler()
+    file_handler = FileHandler(cli)
 
-    scraper = EndpointFinder(cli.args.url, file_handler)
+    scraper = EndpointFinder(cli.args.url, file_handler, cli)
     scraper.run()
